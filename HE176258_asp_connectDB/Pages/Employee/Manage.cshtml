@@ -1,0 +1,92 @@
+﻿@page
+@model HE176258_asp_connectDB.Pages.Employee.ManageModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+}
+<div class="row">
+
+    <div class="col-4">
+        <h3>Form - Create a new Employee</h3>
+        @if (ViewData.ModelState != null)
+        {
+            <ul>
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li class="text-danger">@error.ErrorMessage</li>
+                }
+            </ul>
+        } else
+        {
+            <ul>
+                <li> <label asp-for="Employee.Name"></label>@Model.EmployeesDis.Name</li>
+                <li> <label asp-for="Employee.Email"></label>@Model.EmployeesDis.Email</li>
+                <li> <label asp-for="Employee.Email"></label>@Model.EmployeesDis.Dob</li>
+            </ul>
+            <h4>Uploaded Image</h4>
+            <div class="row">
+                @foreach(var img in Model.EmployeesDis.Image.Split(":"))
+                {
+                    <img src="~/images/avatars/@img" />
+                }
+            </div>
+        }
+        </p>
+        <div>
+            <form method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label asp-for="Employee.Name"></label>
+                    <input class="form-control" asp-for="Employee.Name" />
+                    <span class="form-text text-danger" asp-validation-for="Employee.Name"></span><br />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Employee.Email"></label>
+                    <input class="form-control" asp-for="Employee.Email" />
+                    <span class="form-text text-danger" asp-validation-for="Employee.Email"></span><br />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Employee.Dob"></label>
+                    <input class="form-control" asp-for="Employee.Dob" />
+                    <span class="form-text text-danger" asp-validation-for="Employee.Dob"></span><br />
+                </div>
+
+                <div class="form-group border">
+                    <label asp-for="@Model.AvatarFiles"></label>
+                    <input class="form-control-file" asp-for="@Model.AvatarFiles" />
+                    <span class="form-text text-danger" asp-validation-for="@Model.AvatarFiles"></span><br />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Send</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-8">
+        <h2>List of Employee</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var emp in Model.Employees)
+                {
+                    <tr>
+                        <th scope="row">@emp.Id</th>
+                        <td>@emp.Name</td>
+                        <td>@emp.Email</td>
+                        <td>@DateTime.Now.Year - @emp.Dob</td>
+                        <td class="w-25">
+                            <img style="w" src="~/images/avatars/@emp.Image.Split(";")[0]" />
+                        </td>
+                     </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
